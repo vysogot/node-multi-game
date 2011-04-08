@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+  <head>
+    <title>socket.io client test</title>
+    <script src="/json.js"></script> <!-- for ie -->
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+
+    <script>
+
+      // functions
+
+      function afterConnect() {
+        var gameContainer = document.getElementById('connectionStatus');
+        var username = prompt('Please, type your name:');
+        login(username);
+        gameContainer.innerHTML = 'Welcome ' + username + '! You are connected!';
+      }
+
+      function message(obj) {
+        var gameContainer = document.getElementById('game');
+        var el = document.createElement('p');
+        el.innerHTML = esc(obj.message);
+        gameContainer.appendChild(el);
+      };
+
+      function esc(msg) {
+        return msg.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      };
+
+      function send() {
+        var val = document.getElementById('text').value;
+        socket.send({answer: val});
+        document.getElementById('text').value = '';
+      };
+
+      function login(username) {
+        socket.send({username: username});
+      };
+
+      var socket = new io.Socket(null, {port: 8080, rememberTransport: false});
+      socket.connect();
+
+      socket.on('connect', function(){ afterConnect(); });
+      socket.on('message', function(obj){ message(obj); });
+
+    </script>
+
+    <div id="connectionStatus">
+      <p>Connecting...</p>
+    </div>
+    <div id="game">
+
+    </div>
+    <form id="messanger" onSubmit="send(); return false">
+      <input type="text" id="text" />
+      <input type="submit" value="Send" />
+    </form>
+  </body>
+</html>
