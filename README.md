@@ -24,4 +24,4 @@ What it is about?
 
 Having fun! Idea behind is to develop multiplayer games through a simple template that is in game.js
 
-Feel free to contribute, but remember about... [programming, motherfucker](http://programming-motherfucker.com/).
+Feel free to contribute.
