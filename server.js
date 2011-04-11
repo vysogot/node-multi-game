@@ -15,9 +15,12 @@ var http = require('http'),
 
       switch (path){
         case '/':
-          res.writeHead(200, {'Content-Type': 'text/html'});
-          res.write('Welocome to the game');
-          res.end();
+          var path = '/index.html';
+          fs.readFile(__dirname + getView(path), function(err, data){
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write(data, 'utf8');
+            res.end();
+          });
           break;
         case '/game.html':
           fs.readFile(__dirname + getView(path), function(err, data){
