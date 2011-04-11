@@ -1,5 +1,9 @@
-you'll need socket.io
-clone and run
-
 What it is about?
-be faster than others in dwo numbers multiplification :)
+Be the first one to answer the question correctly FTW.
+
+Installation
+
+You'll need socket.io
+
+$ node lib/server.js
+
