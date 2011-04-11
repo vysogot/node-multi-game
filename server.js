@@ -5,9 +5,7 @@ var http = require('http'),
     sys = require('sys'),
     debug = sys.debug,
     inspect = sys.inspect,
-    User = require('./lib/user').User,
-    Game = require('./lib/game').Game,
-    Multiply = require('./lib/games/multiply/multiply').Multiply;
+    Room = require('./lib/room').Room,
 
     server = http.createServer(function(req, res){
 
@@ -50,61 +48,19 @@ var io = io.listen(server),
     buffer = [];
 
 //
-// Helpers
-//
-
-sendToAll = function(client, message) {
-  client.broadcast(message);
-  client.send(message);
-};
-
-//
 // Game-Clients Logic
 //
 
-//
-// TODO: switch for which game user wants to play
-//       to do something like game rooms
-//
-
-var game = new Multiply();
+var room = new Room();
 
 io.on('connection', function(client){
-  client.send({ buffer: buffer });
+    console.log('connected: '+ client.sessionId);
+    client.on('message', function(message) {
+        room.processMessage(client, message);
+    });
 
-  client.on('message', function(message) {
-    if('username' in message){
-      user = new User(client.sessionId, message.username);
-
-      client.broadcast({message: user.name + ' just joined the game!'});
-      client.send(game.current());
-
-      sendToAll(client, User.scores());
-
-    } else if ('answer' in message) {
-
-      var user = User.getBySessionId(client.sessionId);
-
-      if (game.correct(message.answer)) {
-        user.correctAnswer();
-
-        // TODO: the switch thing or some other approach
-        game = new Multiply();
-
-        client.broadcast({message: User.getBySessionId(client.sessionId).name + ' wins!'});
-        client.send({message: 'You win!'});
-
-        sendToAll(client, game.current());
-        sendToAll(client, User.scores());
-
-      } else {
-        client.send(game.wrong());
-      }
-    }
-  });
-
-  client.on('disconnect', function(){
-    client.broadcast({ announcement: client.sessionId + ' disconnected'});
-    User.destroy(client.sessionId);
-  });
+    client.on('disconnect', function(){
+        client.broadcast({ announcement: client.sessionId + ' disconnected'});
+        room.removeUser(client.sessionId);
+    });
 });
