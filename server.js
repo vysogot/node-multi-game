@@ -5,9 +5,9 @@ var http = require('http'),
     sys = require('sys'),
     debug = sys.debug,
     inspect = sys.inspect,
-    User = require('./user').User,
-    Game = require('./game').Game,
-    Multiply = require('./games/multiply').Multiply;
+    User = require('./lib/user').User,
+    Game = require('./lib/game').Game,
+    Multiply = require('./lib/games/multiply').Multiply;
 
     server = http.createServer(function(req, res){
 
@@ -32,7 +32,7 @@ var http = require('http'),
     }),
 
     getView = function(path){
-      return '/views' + path;
+      return '/lib/views' + path;
     }
 
 send404 = function(res){
