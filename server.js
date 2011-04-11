@@ -7,7 +7,7 @@ var http = require('http'),
     inspect = sys.inspect,
     User = require('./lib/user').User,
     Game = require('./lib/game').Game,
-    Multiply = require('./lib/games/multiply').Multiply;
+    Multiply = require('./lib/games/multiply/multiply').Multiply;
 
     server = http.createServer(function(req, res){
 
@@ -15,14 +15,14 @@ var http = require('http'),
 
       switch (path){
         case '/':
-          var path = '/index.html';
-          fs.readFile(__dirname + getView(path), function(err, data){
+          debug(inspect(__dirname));
+          fs.readFile(__dirname + '/index.html', function(err, data){
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.write(data, 'utf8');
             res.end();
           });
           break;
-        case '/game.html':
+        case '/multiply':
           fs.readFile(__dirname + getView(path), function(err, data){
             if (err) return send404(res);
             res.writeHead(200, {'Content-Type': 'text/html' });
@@ -35,7 +35,7 @@ var http = require('http'),
     }),
 
     getView = function(path){
-      return '/lib/views' + path;
+      return '/lib/games' + path + path + '.html';
     }
 
 send404 = function(res){
