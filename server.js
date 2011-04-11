@@ -55,11 +55,6 @@ sendToAll = function(client, message) {
   client.send(message);
 };
 
-randomInt = function(to, from) {
-    from = from || 0;
-    return Math.floor(Math.random()*to+from);
-};
-
 //
 // Game-Clients Logic
 //
