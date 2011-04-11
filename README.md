@@ -7,7 +7,7 @@ To install:
 2. install [socket.io](https://github.com/LearnBoost/Socket.IO) through npm
 
 
-   git clone git://github.com/vysogot/multiply_motherfucker.git
+   git clone git://github.com/vysogot/node-multi-game.git
 
 To run:
 
