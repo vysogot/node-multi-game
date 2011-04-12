@@ -11,12 +11,9 @@ var http = require('http'),
 
 var app = express.createServer();
 
-app.get('/', function(req, res) {
-    res.sendfile(__dirname + '/index.html');
-});
+app.use(express.static(__dirname + '/public'));
 
 app.get('/games/:id', function(req, res) {
-            console.log(getView(req.params.id));
     res.sendfile(__dirname + getView(req.params.id));
 });
 
