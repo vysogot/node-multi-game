@@ -2,49 +2,31 @@ var http = require('http'),
     url = require('url'),
     fs = require('fs'),
     io = require('socket.io'),
+    express = require('express'),
     sys = require('sys'),
     debug = sys.debug,
     inspect = sys.inspect,
-    Room = require('./lib/room').Room,
+    Room = require('./lib/room').Room;
 
-    server = http.createServer(function(req, res){
 
-      var path = url.parse(req.url).pathname;
+var app = express.createServer();
 
-      switch (path){
-        case '/':
-          debug(inspect(__dirname));
-          fs.readFile(__dirname + '/index.html', function(err, data){
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.write(data, 'utf8');
-            res.end();
-          });
-          break;
-        case '/multiply':
-          fs.readFile(__dirname + getView(path), function(err, data){
-            if (err) return send404(res);
-            res.writeHead(200, {'Content-Type': 'text/html' });
-            res.write(data, 'utf8');
-            res.end();
-          });
-          break;
-        default: send404(res);
-      }
-    }),
+app.get('/', function(req, res) {
+    res.sendfile(__dirname + '/index.html');
+});
 
-    getView = function(path){
-      return '/lib/games' + path + path + '.html';
-    }
+app.get('/games/:id', function(req, res) {
+            console.log(getView(req.params.id));
+    res.sendfile(__dirname + getView(req.params.id));
+});
 
-send404 = function(res){
-  res.writeHead(404);
-  res.write('404');
-  res.end();
+getView = function(path){
+    return '/lib/games/' + path + '/' + path + '.html';
 };
 
-server.listen(8080);
+app.listen(8080);
 
-var io = io.listen(server),
+var io = io.listen(app),
     buffer = [];
 
 //
