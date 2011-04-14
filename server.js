@@ -1,13 +1,13 @@
-var http = require('http'),
-    url = require('url'),
-    fs = require('fs'),
-    io = require('socket.io'),
+var http    = require('http'),
+    url     = require('url'),
+    fs      = require('fs'),
+    io      = require('socket.io'),
     express = require('express'),
-    sys = require('sys'),
-    debug = sys.debug,
+    sys     = require('sys'),
+    debug   = sys.debug,
     inspect = sys.inspect,
-    Room = require('./lib/room').Room;
-
+    Room    = require('./lib/room').Room,
+    _       = require('underscore');
 
 var app = express.createServer();
 
@@ -23,23 +23,30 @@ getView = function(path){
 
 app.listen(8080);
 
-var io = io.listen(app),
-    buffer = [];
-
+io = io.listen(app);
 //
 // Game-Clients Logic
 //
 
-var room = new Room();
+var rooms = {
+    multiply: new Room('multiply'),
+    sum: new Room('sum')
+};
 
 io.on('connection', function(client){
-    console.log('connected: '+ client.sessionId);
     client.on('message', function(message) {
-        room.processMessage(client, message);
+        var room = rooms[message.game];
+        if (room) {
+            room.processMessage(client, message);
+        } else {
+            client.send({message: 'unrecognized message' + JSON.stringify(message)});
+        }
     });
 
     client.on('disconnect', function(){
         client.broadcast({ announcement: client.sessionId + ' disconnected'});
-        room.removeUser(client.sessionId);
+        _.each(rooms, function(room) {
+            room.removeUser(client.sessionId);
+        });
     });
 });

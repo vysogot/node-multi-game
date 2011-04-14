@@ -1,6 +1,7 @@
 // functions
 
-var GameClient = function() {
+var GameClient = function(gameName) {
+    this.gameName = gameName;
     this.socket = new io.Socket(null, {rememberTransport: false});
     this.socket.connect();
     this.socket.on('connect', function(){ this.afterConnect(); }.bind(this));
@@ -37,12 +38,12 @@ GameClient.prototype.message = function(obj) {
 
 GameClient.prototype.send = function() {
     var val = document.getElementById('text').value;
-    this.socket.send({answer: val});
+    this.socket.send({game: this.gameName, answer: val});
     document.getElementById('text').value = '';
 };
 
 GameClient.prototype.login = function(username) {
-    this.socket.send({username: username});
+    this.socket.send({game: this.gameName, username: username});
 };
 
 GameClient.esc = function(msg) {
