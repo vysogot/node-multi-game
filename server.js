@@ -9,11 +9,26 @@ var http    = require('http'),
     Room    = require('./lib/room').Room,
     _       = require('underscore');
 
-var app = express.createServer();
+var app = module.exports = express.createServer();
 
-app.use(express.static(__dirname + '/public'));
+// Configuration
+app.configure(function(){
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(express.compiler({ src: __dirname + '/public', enable: ['sass'] }));
+  app.use(app.router);
+  app.use(express.static(__dirname + '/public'));
+});
 
-app.set('view engine', 'jade');
+app.configure('development', function(){
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function(){
+  app.use(express.errorHandler());
+});
 
 app.get('/', function(req, res) {
     res.render('index');
@@ -27,7 +42,10 @@ getView = function(path){
     return '/lib/games/' + path + '/' + path + '.html';
 };
 
-app.listen(8080);
+if (!module.parent) {
+  app.listen(8080);
+  console.log("Express server listening on port %d", app.address().port);
+}
 
 io = io.listen(app);
 //
