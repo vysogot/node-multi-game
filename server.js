@@ -13,6 +13,12 @@ var app = express.createServer();
 
 app.use(express.static(__dirname + '/public'));
 
+app.set('view engine', 'jade');
+
+app.get('/', function(req, res) {
+    res.render('index');
+});
+
 app.get('/games/:id', function(req, res) {
     res.sendfile(__dirname + getView(req.params.id));
 });
