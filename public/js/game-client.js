@@ -10,7 +10,12 @@ var GameClient = function(gameName) {
 
 GameClient.prototype.afterConnect = function() {
     var container = document.getElementById('connectionStatus');
-    var username = prompt('Please, type your name:');
+    var username = "";
+
+    while (!username) {
+        username = prompt('Please, type your name:');
+    }
+
     this.login(username);
     container.innerHTML = 'Welcome ' + username + '! You are connected!';
 };
