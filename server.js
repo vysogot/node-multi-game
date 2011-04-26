@@ -13,21 +13,21 @@ var app = module.exports = express.createServer();
 
 // Configuration
 app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.compiler({ src: __dirname + '/public', enable: ['sass'] }));
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(express.compiler({ src: __dirname + '/public', enable: ['sass'] }));
+    app.use(app.router);
+    app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 });
 
 app.get('/', function(req, res) {
@@ -35,19 +35,14 @@ app.get('/', function(req, res) {
 });
 
 app.get('/games/:id', function(req, res) {
-    res.sendfile(__dirname + getView(req.params.id));
+    res.render('games/' + req.params.id);
 });
 
-getView = function(path){
-    return '/lib/games/' + path + '/' + path + '.html';
-};
-
 if (!module.parent) {
-  app.listen(8080);
-  console.log("Express server listening on port %d", app.address().port);
+    app.listen(8080);
+    console.log("Express server listening on port %d", app.address().port);
+    io = io.listen(app);
 }
-
-io = io.listen(app);
 //
 // Game-Clients Logic
 //
@@ -69,6 +64,8 @@ io.on('connection', function(client){
 
     client.on('disconnect', function(){
         client.broadcast({ announcement: client.sessionId + ' disconnected'});
+        // Since we don't down the room the user belongs to we call it on every room
+        // this is not ideal but we'll leave it for now
         _.each(rooms, function(room) {
             room.removeUser(client.sessionId);
         });

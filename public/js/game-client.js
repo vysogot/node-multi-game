@@ -9,7 +9,7 @@ var GameClient = function(gameName) {
 };
 
 GameClient.prototype.afterConnect = function() {
-    var container = document.getElementById('connectionStatus');
+    var container = document.getElementById('connection-status');
     var username = "";
 
     while (!username) {
