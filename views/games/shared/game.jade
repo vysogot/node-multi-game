@@ -1,0 +1,19 @@
+/if IE
+  script(src="/js/json.js")
+script(src="/socket.io/socket.io.js")
+script(src="/js/game-client.js")
+script(type="text/javascript")
+  var client = new GameClient('#{game}');
+
+#left
+  #connection-status
+    p Connecting...
+
+  #game
+
+  form#messanger(onsubmit="client.send(); return false")
+    input#text(type="text")
+    input(type="submit", value="Send")
+
+#right
+  #scores.box

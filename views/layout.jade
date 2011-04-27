@@ -2,5 +2,21 @@
 html
   head
     title Node Multi Game
+    link(rel="stylesheet", href="/stylesheets/style.css")
   body
-    != body
+    #wrap
+      #top
+        h2
+          a(href="/", title="Back to main page") LoadFoO [V2]
+        #menu
+          ul
+            li
+              a(href="/") Home
+      #content
+        != body
+
+        #clear
+      #footer
+        p
+          Copyright 2006 LoadFoO [V1]. Designed by
+          a(href="http://loadfoo.org/", target="_blank") LoadFoO
