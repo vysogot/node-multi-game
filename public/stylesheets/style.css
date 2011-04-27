@@ -1,0 +1,76 @@
+body {
+  margin:0;
+  font-family: "Courier New", monospace;
+}
+
+#header {
+  height: 100px;
+  background-color:white;
+  border-top: 3px solid #DADAD5;
+}
+
+#header h1 {
+  padding: 20px 0 0 20px;
+}
+
+#menu {
+  margin: 5px 0;
+  padding: 10px;
+  background-color: blue;
+  border-top: 3px solid #DADAD5;
+  border-bottom: 3px solid #DADAD5;
+  overflow:hidden;
+}
+
+#menu ul {
+  padding-left:20px;
+  list-style:none;
+}
+
+#menu ul li {
+  float:left;
+  margin-right:10px;
+}
+
+#menu ul li a {
+  color:white;
+  display:block;
+  width:100px;
+}
+
+#content {
+  padding:20px;
+  background-color:white;
+  border-bottom:1px solid #DADAD5;
+  overflow:hidden;
+}
+
+/***
+ Game view
+ ***/
+
+#connection-status {
+  padding-bottom:5px;
+  margin-bottom:10px;
+  border-bottom:1px solid #DADAD5;
+}
+
+#left {
+  float:left;
+  margin-right:20px;
+  overflow:auto;
+}
+
+#right {
+  float:left;
+}
+
+#game {
+  width:400px;
+  height:300px;
+  border:5px double #DADAD5;
+  margin-bottom:5px;
+  padding:5px;
+}
+
+form#messanger input[type="text"] { width:300px; }
