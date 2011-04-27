@@ -5,15 +5,16 @@ script(src="/js/game-client.js")
 script(type="text/javascript")
   var client = new GameClient('#{game}');
 
+#connection-status
+  p Connecting...
+
 #left
-  #connection-status
-    p Connecting...
 
   #game
 
   form#messanger(onsubmit="client.send(); return false")
     input#text(type="text")
-    input(type="submit", value="Send")
+    input(type="submit", value="Answer!")
 
 #right
   #scores.box
