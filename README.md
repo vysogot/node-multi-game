@@ -5,6 +5,7 @@ To install:
 
 1. install [nodejs](https://github.com/joyent/node) and [npm](https://github.com/isaacs/npm)
 2. install [socket.io](https://github.com/LearnBoost/Socket.IO) through npm
+2. install jade npm [npm install jade]
 
     git clone git://github.com/vysogot/node-multi-game.git
 
