@@ -4,8 +4,7 @@ Multiplayer metagame to which you can add your own game.
 To install:
 
 1. install [nodejs](https://github.com/joyent/node) and [npm](https://github.com/isaacs/npm)
-2. install [socket.io](https://github.com/LearnBoost/Socket.IO) through npm
-2. install jade npm [npm install jade]
+2. install [socket.io](https://github.com/LearnBoost/Socket.IO), [jade](https://github.com/visionmedia/jade/), [underscore](https://github.com/documentcloud/underscore/) and [express](https://github.com/visionmedia/express) through npm
 
     git clone git://github.com/vysogot/node-multi-game.git
 
@@ -33,9 +32,10 @@ You can add your game in new folder in lib/games/yourGame/ with two files: yourG
 Soon it will need test files also.
 
 yourGame class needs to inherit after Game class. Idea is to make a that can:
-- be initialized
-- interpret a client message
-- response with a client message
+
+    * be initialized
+    * interpret a client message
+    * response with a client message
 
 Handling different games is not implemented yet though :)
 
