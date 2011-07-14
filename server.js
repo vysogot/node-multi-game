@@ -39,9 +39,9 @@ app.get('/games/:id', function(req, res) {
 });
 
 if (!module.parent) {
+    io = io.listen(app);
     app.listen(8080);
     console.log("Express server listening on port %d", app.address().port);
-    io = io.listen(app);
 }
 //
 // Game-Clients Logic
@@ -52,22 +52,28 @@ var rooms = {
     sum: new Room('sum')
 };
 
-io.on('connection', function(client){
-    client.on('message', function(message) {
+io.sockets.on('message', function(message) {
+    console.log(message);
+});
+
+io.sockets.on('connection', function(socket){
+
+    socket.on('message', function(message) {
         var room = rooms[message.game];
+        console.log(room);
         if (room) {
-            room.processMessage(client, message);
+            room.processMessage(socket, message);
         } else {
-            client.send({message: 'unrecognized message' + JSON.stringify(message)});
+            socket.emit('message', {message: 'unrecognized message' + JSON.stringify(message)});
         }
     });
 
-    client.on('disconnect', function(){
-        client.broadcast({ announcement: client.sessionId + ' disconnected'});
+    socket.on('disconnect', function(){
+        socket.broadcast({ announcement: socket.sessionId + ' disconnected'});
         // Since we don't down the room the user belongs to we call it on every room
         // this is not ideal but we'll leave it for now
         _.each(rooms, function(room) {
-            room.removeUser(client.sessionId);
+            room.removeUser(socket.sessionId);
         });
     });
 });

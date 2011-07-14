@@ -2,8 +2,7 @@
 
 var GameClient = function(gameName) {
     this.gameName = gameName;
-    this.socket = new io.Socket(null, {rememberTransport: false});
-    this.socket.connect();
+    this.socket = new io.connect(window.location.protocol + '//' + window.location.host);
     this.socket.on('connect', function(){ this.afterConnect(); }.bind(this));
     this.socket.on('message', function(obj){ this.message(obj); }.bind(this));
 };
@@ -43,12 +42,12 @@ GameClient.prototype.message = function(obj) {
 
 GameClient.prototype.send = function() {
     var val = document.getElementById('text').value;
-    this.socket.send({game: this.gameName, answer: val});
+    this.socket.emit('message', {game: this.gameName, answer: val});
     document.getElementById('text').value = '';
 };
 
 GameClient.prototype.login = function(username) {
-    this.socket.send({game: this.gameName, username: username});
+    this.socket.emit('message', {game: this.gameName, username: username});
 };
 
 GameClient.esc = function(msg) {
