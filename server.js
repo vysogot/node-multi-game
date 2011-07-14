@@ -69,11 +69,11 @@ io.sockets.on('connection', function(socket){
     });
 
     socket.on('disconnect', function(){
-        socket.broadcast({ announcement: socket.sessionId + ' disconnected'});
+        socket.broadcast.emit({ announcement: socket.id + ' disconnected'});
         // Since we don't down the room the user belongs to we call it on every room
         // this is not ideal but we'll leave it for now
         _.each(rooms, function(room) {
-            room.removeUser(socket.sessionId);
+            room.removeUser(socket.id);
         });
     });
 });
