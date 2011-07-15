@@ -60,7 +60,6 @@ io.sockets.on('connection', function(socket){
 
     socket.on('message', function(message) {
         var room = rooms[message.game];
-        console.log(room);
         if (room) {
             room.processMessage(socket, message);
         } else {
