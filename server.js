@@ -43,18 +43,11 @@ if (!module.parent) {
     app.listen(8080);
     console.log("Express server listening on port %d", app.address().port);
 }
-//
-// Game-Clients Logic
-//
 
 var rooms = {
     multiply: new Room('multiply'),
     sum: new Room('sum')
 };
-
-io.sockets.on('message', function(message) {
-    console.log(message);
-});
 
 io.sockets.on('connection', function(socket){
 
